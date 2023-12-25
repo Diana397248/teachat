@@ -18,6 +18,7 @@ class FriendRequestResource extends JsonResource
             'id'=>$this->id,
             'user_id'=>$this->user->id,
             'friend_id'=>$this->friend->id,
+            'friend_name'=>$this->friend->name,
 
         ];
     }
