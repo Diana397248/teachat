@@ -16,8 +16,8 @@ class FriendResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'user_id'=>$this->user->id,
-            'friend_user_id'=>$this->friend->id,
+            'user_id'=>$this->friend->id,
+            'user_name'=>$this->friend->name,
         ];
     }
 }
