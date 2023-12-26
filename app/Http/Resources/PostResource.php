@@ -25,6 +25,7 @@ class PostResource extends JsonResource
             'type'=>$this->type,
             'created_at'=>$this->created_at,
             'content_src'=>$this->content_src,
+            'avatar_src'=>$this->user->avatar_src,
         ];
     }
 }

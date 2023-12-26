@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,10 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //TODO вылазит ошибка при миграции сидера
-        User::factory(3)->create();
-        DatabaseSeeder:
         $this->call([
+            UserSeeder::class,
             CategorySeeder::class,
             PostSeeder::class,
             ChatSeeder::class,
