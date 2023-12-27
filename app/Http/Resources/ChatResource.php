@@ -18,6 +18,7 @@ class ChatResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user->id,
             'user_name' => $this->user->name,
+            'avatar_src' => $this->user->avatar_src,
         ];
     }
 }

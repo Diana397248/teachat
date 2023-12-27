@@ -1,0 +1,436 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  description: |-
+    This is a sample swagger
+  version: 1.0.2
+
+servers:
+  - url: http://localhost:8000/api
+
+paths:
+  /post:
+    get:
+      tags:
+        - post
+      summary: получение списка постов
+      responses:
+        '200':
+          description: description
+          content:
+            application/json:
+              schema:
+                type : array
+                items:
+                  oneOf :
+                    - $ref: '#/components/schemas/Post'
+    post:
+      tags:
+        - post
+      summary: Создания постов
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCreateOrUpdate'
+
+      responses:
+        '200':
+          description: description
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+  /post/{post_id}:
+    put:
+      tags:
+        - post
+      summary: Редактирования постa
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCreateOrUpdate'
+
+      responses:
+        '200':
+          description: description
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+    delete:
+      tags:
+        - post
+      summary: Удаления постa
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: description
+  /friend/{user_id}:
+    delete:
+      tags:
+        - friend
+      summary: удаления друга
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: description
+    post:
+      tags:
+        - friend
+      summary: добавление друга
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: description
+  /friend:
+    get:
+      tags:
+        - friend
+      summary: Получения списка друзей
+      responses:
+        '200':
+          description: description
+          content:
+            application/json:
+              schema:
+                type : array
+                items:
+                  oneOf :
+                    - $ref: '#/components/schemas/Friend'
+  /profile:
+    get:
+      tags:
+        - profile
+      summary: Получение своего профиля
+      responses:
+        '200':
+          description: description
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+    put:
+      tags:
+        - profile
+      summary: Редактирования профиля
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditUserProfile'
+
+      responses:
+        '200':
+          description: description
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+  /chat:
+    get:
+      tags:
+        - chat
+      summary: Получения списка чатов
+      responses:
+        '200':
+          description: description
+          content:
+            application/json:
+              schema:
+                type : array
+                items:
+                  oneOf :
+                    - $ref: '#/components/schemas/Chat'
+  /chat/{chat_id}:
+    get:
+      tags:
+        - message
+      summary: Получения списка сообщений для чата
+      parameters:
+        - name: chat_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: description
+          content:
+            application/json:
+              schema:
+                type : array
+                items:
+                  oneOf :
+                    - $ref: '#/components/schemas/Message'
+
+  /message/read_messages:
+    post:
+      tags:
+        - message
+      summary: Пометить сообщения прочитанными
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: массив айдишников сообщений которые нужно пометить как прочитанные
+              type : object
+              properties:
+                ids:
+                  type: array
+                  items :
+                    type: integer
+
+
+      responses:
+        '200':
+          description: description
+
+
+  /message/{id}:
+    delete:
+      tags:
+        - message
+      summary: Удалить сообщение
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: description
+  /category:
+    get:
+      tags:
+        - category
+      summary: получение списка категорий
+      responses:
+        '200':
+          description: description
+          content:
+            application/json:
+              schema:
+                type : array
+                items:
+                  oneOf :
+                    - $ref: '#/components/schemas/Category'
+    post:
+      tags:
+        - category
+      summary: Создания категории
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditCategory'
+
+      responses:
+        '200':
+          description: description
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+
+
+components:
+  schemas:
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        chat_id:
+          type: integer
+          format: int64
+          example: 1
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+        user_name:
+          type: string
+          example: "Nastya"
+        text_messenger:
+          type: string
+          example: "Nastya"
+        created_at:
+          type: string
+          format: date-time
+          example: "2017-07-21T17:32:28Z"
+        status:
+          type: string
+          example: "sent"
+          enum:
+            - sent
+            - read
+    Chat:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+        user_name:
+          type: string
+          example: "Nastya"
+        avatar_src:
+          type: string
+          example: "http://img/cutecat.png"
+    Friend:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+        user_name:
+          type: string
+          example: "Nastya"
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+        user_name:
+          type: string
+          example: "Nastya"
+        category_id:
+          type: integer
+          format: int64
+          example: 1
+        category_name:
+          type: string
+          example: "Cпорт"
+        title:
+          type: string
+          example: "Cat"
+        description:
+          type: string
+          example: "Cute cat"
+        type:
+          type: string
+          example: "video"
+          enum:
+            - img
+            - video
+        created_at:
+          type: string
+          format: date-time
+          example: "2017-07-21T17:32:28Z"
+        content_src:
+          type: string
+          example: "http://img/cutecat.png"
+        avatar_src:
+          type: string
+          example: "http://img/cutecat.png"
+    PostCreateOrUpdate:
+      type: object
+      properties:
+        category_id:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: "Cat"
+        description:
+          type: string
+          example: "Cute cat"
+        type:
+          type: string
+          example: "video"
+          enum:
+            - img
+            - video
+        content_data:
+          type: string
+          format: binary
+    UserProfile:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+        avatar_src:
+          type: string
+          example: "http://img/cutecat.png"
+        name:
+          type: string
+          example: "Cute_cat"
+        like_categories:
+          type : array
+          items:
+            oneOf :
+              - $ref: '#/components/schemas/Category'
+
+    EditUserProfile:
+      type: object
+      properties:
+        avatar:
+          type: string
+          example: "http://img/cutecat.png"
+        name:
+          type: string
+          example: "Cute_cat"
+        like_categories_ids:
+          type : array
+          items :
+            type: integer
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: "category"
+    EditCategory:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "category"

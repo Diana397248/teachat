@@ -4,10 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\Chat;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class ChatSeeder extends Seeder
 {
+    private static $keyUserId = "user_id";
     /**
      * Run the database seeds.
      *
@@ -15,14 +17,16 @@ class ChatSeeder extends Seeder
      */
     public function run()
     {
-        $this -> createChat();
-    }
-    private function createChat()
-    {
         Chat::factory()
-            ->count(5)
+            ->count(3)
+            ->state(new Sequence(
+                $this->createUserIdSecVal(1),
+                $this->createUserIdSecVal(2),
+                $this->createUserIdSecVal(3)))
             ->create();
-
-
+    }
+    private function createUserIdSecVal(int $id): array
+    {
+        return [ChatSeeder::$keyUserId => $id];
     }
 }
