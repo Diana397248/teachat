@@ -20,7 +20,7 @@ class MessageController extends Controller
     public function index($idChat)
     {
         $messages = Messenger::where('chat_id', '=', $idChat)
-            ->orderBy('created_at', 'DESC')->get();
+            ->orderBy('created_at', 'ASC')->get();
         return MessengerResource::collection($messages);
     }
 
