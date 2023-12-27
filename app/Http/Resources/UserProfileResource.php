@@ -16,7 +16,7 @@ class UserProfileResource extends JsonResource
     {
         return [
             "user_id" => $this->id,
-            "avatar" => "http://img/cutecat.png",
+            "avatar_src" => $this->avatar_src,
             "name" => $this->name,
             "like_categories" => $this->transformLikeCategories()
         ];
