@@ -14,6 +14,8 @@ class UserProfileRequest extends FormRequest
     public function authorize()
     {
         return true;
+//todo раскоментировать когда прикрутим автиоризацию
+//        return false;
     }
 
     /**
@@ -25,10 +27,14 @@ class UserProfileRequest extends FormRequest
     {
         return [
             "avatar" => "required",
-            "name" => "required|unique:users,name|max:255",
-            "like_categories_ids" => 'required|array',
+            //todo раскоментировать когда прикрутим автиоризацию
+//            "name" => "required|unique:users,name," . $this->user->id . "|max:255",
+            "name" => "required|unique:users,name," . 2 . "|max:255",
+            "like_categories_ids" => 'present|array',
             'like_categories_ids.*' => 'integer|exists:categories,id',
         ];
     }
+
+    //todo messages
 
 }

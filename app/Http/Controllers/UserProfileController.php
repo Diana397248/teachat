@@ -18,7 +18,7 @@ class UserProfileController extends Controller
     public function index()
     {
         // todo from token
-        $u = User::find(1);
+        $u = User::find(2);
         return new UserProfileResource($u);
     }
 
@@ -53,7 +53,7 @@ class UserProfileController extends Controller
     public function update(UserProfileRequest $request)
     {
         //todo from token userId
-        $userId = 1;
+        $userId = 2;
         $editProfile = User::find($userId);
         $editProfile->fill($request->validated());
 
