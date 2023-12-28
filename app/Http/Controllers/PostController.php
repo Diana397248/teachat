@@ -44,9 +44,8 @@ class PostController extends Controller
     {
         $postForCreate = new Post(); // Post
         $postForCreate->fill($request->validated());
-        //todo Set user from token
-        $u = User::find(1);
-        $postForCreate->user_id = $u->id;
+        $user = auth('sanctum')->user();
+        $postForCreate->user_id = $user->id;
         $postForCreate->content_src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0A4spPaKrdGH0OOQ54vS3H8dPobB3ManNNphiO8t1ipjxqmDCHdRndTAcOUmW5GXJriU&usqp=CAU';
         $postForCreate->save();
         return new PostResource($postForCreate);
