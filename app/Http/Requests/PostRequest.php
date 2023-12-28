@@ -32,4 +32,18 @@ class PostRequest extends FormRequest
             'content_data' => 'required',
         ];
     }
+    public function messages()
+    {
+        return [
+            'category_id.required' => 'должно быть не пустым',
+            'category_id.exists' => 'нет такой категории',
+            'title.required' => 'должно быть не пустым',
+            'title.max' => 'привышена максимальное количество символов 255',
+            'description.required' => 'должно быть не пустым',
+            'description.max' => 'привышена максимальное количество символов 255',
+            'type.in' => 'тип должен быть img или video',
+//           TODO фаил
+//            'content_data.required' => 'required',
+        ];
+    }
 }
