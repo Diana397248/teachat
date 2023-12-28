@@ -21,18 +21,17 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $user = auth('sanctum')->user();
-        //todo
-        $user = User::find(1);
-        if (!$user) {
-            return PostResource::collection(Post::all());
+        if ($user) {
+            $userCategoriesIds = $user->likeCategories()->get()
+                ->map(function ($elem) {
+                    return $elem->category_id;
+                });
+            if ($userCategoriesIds->count() > 0) {
+                $postsWithUserLikesCategories = Post::whereIn('category_id', $userCategoriesIds)->get();
+                return PostResource::collection($postsWithUserLikesCategories);
+            }
         }
-
-        $userCategoriesIds = $user->likeCategories()->get()
-        ->map(function ($elem){
-            return $elem->category_id;
-    });
-        $postsWithUserLikesCategories = Post::whereIn('category_id', $userCategoriesIds)->get();
-        return PostResource::collection($postsWithUserLikesCategories);
+        return PostResource::collection(Post::all());
     }
 
     /**

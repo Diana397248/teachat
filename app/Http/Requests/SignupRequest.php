@@ -16,7 +16,7 @@ class SignupRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
+            'name' => 'required|string|unique:users,name',
             'last_name' => 'required|string',
             'email' => 'required|unique:users,email|email',
             'password' => 'required|min:1',
@@ -28,6 +28,7 @@ class SignupRequest extends FormRequest
         return [
             'name.required' => 'имя должно быть не пустым',
             'name.string' => 'имя должно быть строкой',
+            'name.unique' => 'пользователь уже зарегистрирован',
             'last_name.required' => 'фамилия должна быть не пустым',
             'last_name.string' => 'фамилия должна быть строкой',
             'email.required' => 'email должен быть не пустым',
