@@ -27,6 +27,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         // this need for add authorize user use this for test
-//        Auth::loginUsingId(1, true);
+        //        Auth::loginUsingId(1, true);
     }
 }

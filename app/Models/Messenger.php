@@ -9,6 +9,7 @@ class Messenger extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['text_messenger'];
     public function user()
     {
         return $this->belongsTo(User::class);

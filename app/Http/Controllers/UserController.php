@@ -2,65 +2,83 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\SignupRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-        // TODO доделать метод
         return UserResource::collection(User::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function login(LoginRequest $request)
     {
-        //
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !User::checkPassHash($request->password, $user->password)) {
+            return response(null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        Auth::login($user);
+
+        return response()->json([
+            'user_id'=> $user->id,
+            'user_token' => $this->generateToken($user),
+            "user_role" => $user->role
+        ])->setStatusCode(200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function logout(Request $request)
     {
-        //
+        $user = $request->user();
+        $user->tokens()->delete();
+        return [
+            'content' => [
+                'message' => 'Выход',
+            ],
+        ];
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function signup(SignupRequest $request)
     {
-        //
+        $user = User::make($request->validated());
+        $user->password = Hash::make($user->password, [
+            'memory' => 1024,
+            'time' => 2,
+            'threads' => 2,
+        ]);
+//        /todo
+        $user->avatar_src = "https://sun155-1.userapi.com/s/v1/ig2/mT_XLhlVBauQlejBKSk2DchjE4X8X6I2JiuBtrwaBb5fxZxPjqtfhOkfzt6q3wauyOMRDl5cfu2TEN9IOg8O4sH4.jpg?size=200x0&quality=96&crop=73,141,595,595&ava=1";
+        $user->save();
+
+
+        return response()->json([
+            'user_token'  => $this->generateToken($user)
+        ])->setStatusCode(201);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    private function generateToken(User $user)
     {
-        //
+        $abilities = [];
+//todo if need admin role add migration
+//        if ($user->role == "ADMIN") {
+//            $abilities = ["ADMIN"];
+//        }
+        $token = $user->createToken(Hash::make(Str::random()), $abilities);
+        return $token->plainTextToken;
     }
 }

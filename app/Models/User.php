@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -21,6 +22,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'last_name',
         'email',
         'password',
     ];
@@ -58,6 +60,26 @@ class User extends Authenticatable
         $findCategories = Category::whereIn('id', $categoryIds)->get();
         return CategoryResource::collection($findCategories);
 
+    }
+
+
+    public static function hash($pass)
+    {
+        $hashed = Hash::make($pass, [
+            'memory' => 1024,
+            'time' => 2,
+            'threads' => 2,
+        ]);
+        return $hashed;
+    }
+
+    public static function checkPassHash($password, $passwordHash): bool
+    {
+        return Hash::check($password, $passwordHash, [
+            'memory' => 1024,
+            'time' => 2,
+            'threads' => 2,
+        ]);
     }
 
 }

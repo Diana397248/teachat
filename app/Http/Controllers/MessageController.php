@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MessageRequest;
 use App\Http\Requests\ReadMessagesRequest;
 use App\Http\Resources\MessengerResource;
 use App\Models\Messenger;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -27,12 +29,21 @@ class MessageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param MessageRequest $request
+     * @param int $idChat
+     * @return MessengerResource
      */
-    public function store(Request $request)
+    public function store(MessageRequest $request, int $idChat)
     {
-//
+        $messageForCreate = new Messenger();
+        $messageForCreate->fill($request->validated());
+        //Todo get from token
+        $u = User::find(1);
+        $messageForCreate->user_id = $u->id;
+        $messageForCreate->chat_id = $idChat;
+        $messageForCreate->status = 'sent';
+        $messageForCreate->save();
+        return new MessengerResource($messageForCreate);
     }
 
     /**
@@ -84,7 +95,7 @@ class MessageController extends Controller
         $findMessages = Messenger::whereIn('id', $request->ids)->get();
         foreach ($findMessages as $mes) {
             $mes->status = 'read';
-            $mes -> save();
+            $mes->save();
         }
         return response(null, Response::HTTP_NO_CONTENT);
     }
