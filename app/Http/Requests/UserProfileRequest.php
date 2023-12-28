@@ -13,9 +13,11 @@ class UserProfileRequest extends FormRequest
      */
     public function authorize()
     {
+        $user = auth('sanctum')->user();
+        if ($user == null) {
+            return false;
+        }
         return true;
-//todo раскоментировать когда прикрутим автиоризацию
-//        return false;
     }
 
     /**
@@ -27,12 +29,18 @@ class UserProfileRequest extends FormRequest
     {
         return [
             "avatar" => "required",
-            "name" => "required|unique:users,name," . $this->user->id . "|max:255",
+            "name" => "required|unique:users,name," . $this->user()->id . "|max:255",
             "like_categories_ids" => 'present|array',
             'like_categories_ids.*' => 'integer|exists:categories,id',
         ];
     }
 
-    //todo messages
+    public function messages()
+    {
+        return [
+            'name.required' => 'имя должно быть не пустым',
+            'name.unique' => 'пользователь c таким именем уже занят',
+        ];
+    }
 
 }

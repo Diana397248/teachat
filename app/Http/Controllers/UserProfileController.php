@@ -17,9 +17,8 @@ class UserProfileController extends Controller
      */
     public function index()
     {
-        // todo from token
-        $u = User::find(2);
-        return new UserProfileResource($u);
+        $user = auth('sanctum')->user();
+        return new UserProfileResource($user);
     }
 
     /**
@@ -48,12 +47,13 @@ class UserProfileController extends Controller
      * Update the specified resource in storage.
      *
      * @param UserProfileRequest $request
+     * @param User $user
      * @return UserProfileResource
      */
-    public function update(UserProfileRequest $request)
+    public function update(UserProfileRequest $request, User $user)
     {
-        //todo from token userId
-        $userId = 2;
+        $user = auth('sanctum')->user();
+        $userId = $user->id;
         $editProfile = User::find($userId);
         $editProfile->fill($request->validated());
 
