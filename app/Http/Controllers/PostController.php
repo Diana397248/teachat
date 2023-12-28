@@ -15,17 +15,30 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(Request $request)
     {
-        return PostResource::collection(Post::all());
+        $user = auth('sanctum')->user();
+        //todo
+        $user = User::find(1);
+        if (!$user) {
+            return PostResource::collection(Post::all());
+        }
+
+        $userCategoriesIds = $user->likeCategories()->get()
+        ->map(function ($elem){
+            return $elem->category_id;
+    });
+        $postsWithUserLikesCategories = Post::whereIn('category_id', $userCategoriesIds)->get();
+        return PostResource::collection($postsWithUserLikesCategories);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param PostRequest $request
      * @return PostResource
      */
     public function store(PostRequest $request)
