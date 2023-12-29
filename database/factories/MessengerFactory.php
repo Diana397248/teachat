@@ -15,11 +15,13 @@ class MessengerFactory extends Factory
      */
     public function definition()
     {
+        $randomChat = Chat::all()->random();
+        $userId = $randomChat->chatUsers->random()->user->id;
         return [
-            'chat_id' => Chat::all()->random()->id,
-            'user_id' => User::all()->random()->id,
+            'chat_id' => $randomChat->id,
+            'user_id' => $userId,
             'text_messenger' => $this->faker->text(12),
-            'status' => $this->faker->randomElement(['sent', 'read']),
+            'status' => 'read',
         ];
     }
 }

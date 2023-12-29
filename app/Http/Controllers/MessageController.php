@@ -37,9 +37,8 @@ class MessageController extends Controller
     {
         $messageForCreate = new Messenger();
         $messageForCreate->fill($request->validated());
-        //Todo get from token
-        $u = User::find(1);
-        $messageForCreate->user_id = $u->id;
+        $user = auth('sanctum')->user();
+        $messageForCreate->user_id = $user->id;
         $messageForCreate->chat_id = $idChat;
         $messageForCreate->status = 'sent';
         $messageForCreate->save();

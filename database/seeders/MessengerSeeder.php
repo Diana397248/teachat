@@ -15,7 +15,7 @@ class MessengerSeeder extends Seeder
     public function run()
     {
         Messenger::factory()
-            ->count(6)
+            ->count(100)
             ->create();
     }
 }

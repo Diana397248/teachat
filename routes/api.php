@@ -39,6 +39,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 //Chat
     Route::get('/chat', [ChatController::class, 'index']);
+    Route::get('/chat/{idChat}', [ChatController::class, 'show']);
 
 //Friend
 //TODO сделать добавление друга и удаление друга работает по принципу
@@ -55,8 +56,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 //Message todo изменить маршрут  /chat/{idChat} на /chat/{idChat}/message
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/chat/{idChat}', [MessageController::class, 'index']);
-    Route::post('/chat/{idChat}', [MessageController::class, 'store']);
+    Route::get('/chat/{idChat}/message', [MessageController::class, 'index']);
+    Route::post('/chat/{idChat}/message', [MessageController::class, 'store']);
     Route::delete('/message/{id}', [MessageController::class, 'destroy']);
     Route::post('/message/read_messages', [MessageController::class, 'readMessages']);
 });

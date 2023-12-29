@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Chat;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ChatResource extends JsonResource
@@ -14,11 +15,17 @@ class ChatResource extends JsonResource
      */
     public function toArray($request)
     {
+
+        $user = auth('sanctum')->user();
+        $findChat = Chat::find($this->id);
+        $uId = $findChat->chatOtherUser($user)->id;
+        $uName = $findChat->chatOtherUser($user)->name;
+        $uAvatar = $findChat->chatOtherUser($user)->avatar_src;
         return [
             'id' => $this->id,
-            'user_id' => $this->user->id,
-            'user_name' => $this->user->name,
-            'avatar_src' => $this->user->avatar_src,
+            'user_id' => $uId,
+            'user_name' => $uName,
+            'avatar_src' => $uAvatar,
         ];
     }
 }
