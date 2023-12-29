@@ -28,10 +28,10 @@ class UserProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            "avatar" => "required",
+            'avatar' => 'required|mimes:jpg,jpeg,png|max:2048',
             "name" => "required|unique:users,name," . $this->user()->id . "|max:255",
             "like_categories_ids" => 'present|array',
-            'like_categories_ids.*' => 'integer|exists:categories,id',
+//            'like_categories_ids.*' => 'exists:categories,id',
         ];
     }
 

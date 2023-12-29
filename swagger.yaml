@@ -3,7 +3,7 @@ info:
   title: Swagger Petstore - OpenAPI 3.0
   description: |-
     This is a sample swagger
-  version: 1.0.11
+  version: 1.0.12
 
 servers:
   - url: http://localhost:8000/api
@@ -132,7 +132,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserProfile'
-    put:
+    post:
       tags:
         - profile
       summary: Редактирования профиля

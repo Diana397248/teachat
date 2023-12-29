@@ -34,7 +34,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 //Profile
     Route::get('/profile', [UserProfileController::class, 'index']);
-    Route::put('/profile', [UserProfileController::class, 'update']);
+    Route::post('/profile', [UserProfileController::class, 'update']);
 
 
 //Chat

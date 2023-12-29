@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserProfileRequest;
 use App\Http\Resources\UserProfileResource;
+use App\Http\Utils\FileUtils;
 use App\Models\User;
 use App\Models\UserLikeCategories;
 use Illuminate\Http\Request;
@@ -56,16 +57,20 @@ class UserProfileController extends Controller
         $userId = $user->id;
         $editProfile = User::find($userId);
         $editProfile->fill($request->validated());
+        $srcContent = FileUtils::saveToLocalFromRequest($request, "avatar");
+        $editProfile->avatar_src = $srcContent;
 
-        foreach ($editProfile->likeCategories as $c) {
-            $c->delete();
-        }
+        if (!$editProfile->likeCategories) {
+            foreach ($editProfile->likeCategories as $c) {
+                $c->delete();
+            }
 
-        foreach ($request->like_categories_ids as $id) {
-            $newLikeCategory = new UserLikeCategories();
-            $newLikeCategory->user_id = $userId;
-            $newLikeCategory->category_id = $id;
-            $newLikeCategory->save();
+            foreach ($request->like_categories_ids as $id) {
+                $newLikeCategory = new UserLikeCategories();
+                $newLikeCategory->user_id = $userId;
+                $newLikeCategory->category_id = $id;
+                $newLikeCategory->save();
+            }
         }
         $editProfile->save();
         return new UserProfileResource($editProfile);
