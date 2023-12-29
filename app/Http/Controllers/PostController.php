@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\PostResource;
+use App\Http\Utils\FileUtils;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -46,7 +46,8 @@ class PostController extends Controller
         $postForCreate->fill($request->validated());
         $user = auth('sanctum')->user();
         $postForCreate->user_id = $user->id;
-        $postForCreate->content_src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0A4spPaKrdGH0OOQ54vS3H8dPobB3ManNNphiO8t1ipjxqmDCHdRndTAcOUmW5GXJriU&usqp=CAU';
+        $srcContent = FileUtils::saveToLocalFromRequest($request, "content_data");
+        $postForCreate->content_src = $srcContent;
         $postForCreate->save();
         return new PostResource($postForCreate);
     }

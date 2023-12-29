@@ -28,8 +28,7 @@ class PostRequest extends FormRequest
             'title' => 'required|max:255',
             'description' => 'required|max:255',
             'type' => 'in:img,video',
-//           TODO фаил
-            'content_data' => 'required',
+            'content_data' => 'required|mimes:jpg,jpeg,png|max:2048',
         ];
     }
     public function messages()
