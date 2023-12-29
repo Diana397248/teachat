@@ -45,11 +45,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 //TODO сделать добавление друга и удаление друга работает по принципу
 //  /friend/1  - для текущего пользователя добавить/удалить запись где friend_user_id = 1
     Route::get('/friend', [FriendController::class, 'index']);
+    Route::get('/friend/list_users_for_add', [FriendController::class, 'listUserForAddFriend']);
     Route::delete('/friend/{userId}', [FriendController::class, 'destroy']);
+    Route::post('/friend', [FriendController::class, 'store']);
 
 //Friend request
     Route::get('/friend_request', [FriendRequestController::class, 'index']);
-    Route::post('/friend_request/{userFriendId}', [FriendRequestController::class, 'store']);
+    Route::post('/friend_request', [FriendRequestController::class, 'acceptRequest']);
 
 //Category
     Route::get('/category', [CategoryController::class, 'index']);

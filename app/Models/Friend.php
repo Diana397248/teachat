@@ -37,4 +37,25 @@ class Friend extends Model
         }
         abort(404);
     }
+
+    //todo refactor this normal link db
+    public static function createFriend($u1, $u2)
+    {
+        if (
+            Friend::where('user_id', "=", $u1)->where('friend_user_id', "=", $u2)->exists()
+            ||
+            Friend::where('user_id', "=", $u2)->where('friend_user_id', "=", $u1)->exists()
+        ) {
+            return;
+        }
+        $friend = new Friend();
+        $friend->user_id = $u1;
+        $friend->friend_user_id = $u2;
+        $friend->save();
+
+        $friendReverse = new Friend();
+        $friendReverse->user_id = $u2;
+        $friendReverse->friend_user_id = $u1;
+        $friendReverse->save();
+    }
 }

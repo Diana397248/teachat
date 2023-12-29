@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\FriendRequestResource;
+use App\Models\Chat;
+use App\Models\Friend;
 use App\Models\FriendRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class FriendRequestController extends Controller
 {
@@ -15,26 +18,37 @@ class FriendRequestController extends Controller
      */
     public function index()
     {
-        return FriendRequestResource::collection(FriendRequest::all());
+        $user = auth('sanctum')->user();
+        $myRequests = FriendRequest::where("friend_id", "=", $user->id)->get();
+        return FriendRequestResource::collection($myRequests);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * assept request.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $userFriendId
-     * @return FriendRequestResource
+     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $userFriendId)
+    public function acceptRequest(Request $request): Response
     {
-        $friendRequestForCreate = new FriendRequest();
-        $u = FriendRequest::find(1);
-        $friendRequestForCreate->user_id = $u->id;
-        $friendRequestForCreate->friend_id = $userFriendId;
-        $friendRequestForCreate->save();
-        return new FriendRequestResource($friendRequestForCreate);
-    }
+        $userId = auth('sanctum')->user()->id;
+        if ($request->has('friend_id')) {
+            $friendId = $request->input('friend_id');
 
+            $findRequest = FriendRequest::where("friend_id", "=", $userId)
+                ->where("user_id", "=", $friendId)->first();
+            if (!$findRequest) {
+                return response(null, Response::HTTP_NOT_FOUND);
+            }
+            $findRequest->delete();
+            Friend::createFriend($userId, $friendId);
+            Chat::createUserChat($userId, $friendId);
+            return response(null, Response::HTTP_NO_CONTENT);
+        }
+
+        return response(null, Response::HTTP_NOT_FOUND);
+
+    }
     /**
      * Display the specified resource.
      *

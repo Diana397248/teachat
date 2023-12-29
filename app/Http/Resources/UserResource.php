@@ -21,6 +21,7 @@ class UserResource extends JsonResource
             'remember_token' => $this->remember_token,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'avatar_src' => $this->avatar_src,
         ];
     }
 }

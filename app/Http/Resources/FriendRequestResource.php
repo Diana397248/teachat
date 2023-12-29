@@ -16,10 +16,10 @@ class FriendRequestResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'user_id'=>$this->user->id,
-            'friend_id'=>$this->friend->id,
-            'friend_name'=>$this->friend->name,
-            'friend_avatar_src'=>$this->friend->avatar_src,
+            'user_id'=>$this->friend->id,
+            'friend_id'=>$this->user->id,
+            'friend_name'=>$this->user->name,
+            'friend_avatar_src'=>$this->user->avatar_src,
         ];
     }
 }

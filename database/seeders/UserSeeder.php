@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::factory()
-            ->count(3)
+            ->count(15)
             ->state(new Sequence(
                 $this->createAvatarSrcSecVal(
                     'https://i.pinimg.com/736x/11/13/f6/1113f62b818e33f88264df5494694b1a.jpg'

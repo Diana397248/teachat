@@ -43,19 +43,7 @@ class ChatSeeder extends Seeder
                 }
             }
 
-            $newChat = new Chat();
-            $newChat->save();
-
-            // it`s me
-            $chatUserCur = new ChatUsers();
-            $chatUserCur->user_id = $current->id;
-            $chatUserCur->chat_id = $newChat->id;
-            $chatUserCur->save();
-            // My friend
-            $chatUserFriend = new ChatUsers();
-            $chatUserFriend->user_id = $friendUser->id;
-            $chatUserFriend->chat_id = $newChat->id;
-            $chatUserFriend->save();
+            Chat::createUserChat($current->id, $friendUser->id);
         });
     }
 }
