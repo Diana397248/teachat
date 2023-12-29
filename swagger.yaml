@@ -3,7 +3,7 @@ info:
   title: Swagger Petstore - OpenAPI 3.0
   description: |-
     This is a sample swagger
-  version: 1.0.8
+  version: 1.0.11
 
 servers:
   - url: http://localhost:8000/api
@@ -404,9 +404,16 @@ components:
           type: integer
           format: int64
           example: 1
+        chat_id:
+          type: integer
+          format: int64
+          example: 1
         user_name:
           type: string
           example: "Nastya"
+        avatar_src:
+          type: string
+          example: "http://img/cutecat.png"
     AuthToken:
       type: object
       properties:

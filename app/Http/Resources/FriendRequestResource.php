@@ -19,7 +19,7 @@ class FriendRequestResource extends JsonResource
             'user_id'=>$this->user->id,
             'friend_id'=>$this->friend->id,
             'friend_name'=>$this->friend->name,
-
+            'friend_avatar_src'=>$this->friend->avatar_src,
         ];
     }
 }

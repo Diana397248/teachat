@@ -22,6 +22,9 @@ class CreateFriendsTable extends Migration
 
             $table->unsignedBigInteger('friend_user_id');
             $table->foreign('friend_user_id')->references('id')->on('users');
+
+            $table->unique(['user_id', 'friend_user_id']);
+
         });
     }
 

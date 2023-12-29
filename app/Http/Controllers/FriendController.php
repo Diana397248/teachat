@@ -18,7 +18,9 @@ class FriendController extends Controller
      */
     public function index()
     {
-        return FriendResource::collection(Friend::all());
+        $user = auth('sanctum')->user();
+        $myFriends = Friend::where("user_id", "=", $user-> id)->get();
+        return FriendResource::collection($myFriends);
     }
 
     /**

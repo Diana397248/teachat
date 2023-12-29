@@ -14,10 +14,5 @@ class FriendFactory extends Factory
      */
     public function definition()
     {
-        $randomsU = User::inRandomOrder()->limit(2)->get();
-        return [
-            "user_id" => $randomsU->values()->get(0)-> id,
-            "friend_user_id" => $randomsU->values()->get(1)-> id,
-        ];
     }
 }

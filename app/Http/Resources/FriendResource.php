@@ -18,6 +18,8 @@ class FriendResource extends JsonResource
             'id'=>$this->id,
             'user_id'=>$this->friend->id,
             'user_name'=>$this->friend->name,
+            'avatar_src'=>$this->friend->avatar_src,
+            'chat_id'=> $this-> getChatId()
         ];
     }
 }
