@@ -52,6 +52,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 //Friend request
     Route::get('/friend_request', [FriendRequestController::class, 'index']);
     Route::post('/friend_request', [FriendRequestController::class, 'acceptRequest']);
+    Route::post('/friend_request/cancel/{friendRequestId}', [FriendRequestController::class, 'cancelRequest']);
 
 //Category
     Route::get('/category', [CategoryController::class, 'index']);

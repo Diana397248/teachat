@@ -128,20 +128,23 @@ class FriendController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $userId
+     * @param int $userFriendId
      * @return Response
      */
-    public function destroy($userId)
+    public function destroy($userFriendId)
     {
-        //todo Set user from token
-        $u = User::find(1);
-        $itemForDelete = Friend::where('friend_user_id', '=', $userId)
-            ->where('user_id', '=', $u->id)
+        $userId = auth('sanctum')->user()->id;
+        $itemForDelete = Friend::where('friend_user_id', '=', $userFriendId)
+            ->where('user_id', '=', $userId)
+            ->first();
+        $itemForDeleteInverse = Friend::where('friend_user_id', '=',$userId )
+            ->where('user_id', '=',$userFriendId )
             ->first();
         if (!$itemForDelete) {
             return response(null, Response::HTTP_NOT_FOUND);
         }
         $itemForDelete->delete();
+        $itemForDeleteInverse->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }

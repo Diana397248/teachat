@@ -49,6 +49,20 @@ class FriendRequestController extends Controller
         return response(null, Response::HTTP_NOT_FOUND);
 
     }
+
+    /**
+     * assept request.
+     *
+     * @param int $friendRequestId
+     * @return \Illuminate\Http\Response
+     */
+    public function cancelRequest($friendRequestId): Response
+    {
+        $reqToCancel = FriendRequest::find($friendRequestId);
+        $reqToCancel->delete();
+        return response(null, Response::HTTP_OK);
+    }
+
     /**
      * Display the specified resource.
      *
