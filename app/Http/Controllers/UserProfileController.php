@@ -65,7 +65,7 @@ class UserProfileController extends Controller
                 $c->delete();
             }
         }
-        if (count($request->like_categories_ids) > 0) {
+        if ($request->like_categories_ids && count($request->like_categories_ids) > 0) {
             foreach ($request->like_categories_ids as $id) {
                 $newLikeCategory = new UserLikeCategories();
                 $newLikeCategory->user_id = $userId;

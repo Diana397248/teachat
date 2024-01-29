@@ -30,14 +30,13 @@ class UserProfileRequest extends FormRequest
         return [
             'avatar' => 'required|mimes:jpg,jpeg,png|max:2048',
             "name" => "required|unique:users,name," . $this->user()->id . "|max:255",
-            "like_categories_ids" => 'present|array',
-//            'like_categories_ids.*' => 'exists:categories,id',
         ];
     }
 
     public function messages()
     {
         return [
+            //todo avatar
             'name.required' => 'имя должно быть не пустым',
             'name.unique' => 'пользователь c таким именем уже занят',
         ];
