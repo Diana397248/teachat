@@ -56,7 +56,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 //Category
     Route::get('/category', [CategoryController::class, 'index']);
+    Route::post('/category', [CategoryController::class, 'store']);
     Route::put('/category/{categoryId}', [CategoryController::class, 'update']);
+    Route::delete('/category/{categoryId}', [CategoryController::class, 'destroy']);
 });
 //Message todo изменить маршрут  /chat/{idChat} на /chat/{idChat}/message
 Route::middleware(['auth:sanctum'])->group(function () {

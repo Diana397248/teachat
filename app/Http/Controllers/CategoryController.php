@@ -23,12 +23,15 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param CategoryRequest $request
+     * @return CategoryResource
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        $newCategory = new Category();
+        $newCategory->fill($request->validated());
+        $newCategory->save();
+        return new CategoryResource($newCategory);
     }
 
     /**
@@ -62,11 +65,16 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param int $categoryId
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($categoryId)
     {
-        //
+        $updateCategory = Category::find($categoryId);
+        if (!$updateCategory) {
+            return response(null, Response::HTTP_NOT_FOUND);
+        }
+        $updateCategory->delete();
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
