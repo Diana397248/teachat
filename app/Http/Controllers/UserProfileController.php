@@ -56,10 +56,7 @@ class UserProfileController extends Controller
         $user = auth('sanctum')->user();
         $userId = $user->id;
         $editProfile = User::find($userId);
-        if ($request->input("avatar")) {
-            $editProfile->fill($request->validate([
-                'avatar' => 'required|mimes:jpg,jpeg,png|max:2048',
-            ]));
+        if ($request->file("avatar")) {
             $srcContent = FileUtils::saveToLocalFromRequest($request, "avatar");
             $editProfile->avatar_src = $srcContent;
         }
