@@ -31,11 +31,17 @@ class Friend extends Model
         foreach ($findChatsUsers as $fcu){
             $chatIdString = "" . ($fcu->chat_id);
             if (array_key_exists($chatIdString, $map)) {
-                return $fcu->chat_id;
+                return [
+                    "ok"=> true,
+                    "chatId" => $fcu->chat_id
+                ];
             }
             $map[$chatIdString] = $fcu->user_id;
         }
-        abort(404);
+        return [
+            "ok"=> false,
+            "chatId" => 0
+        ];
     }
 
     //todo refactor this normal link db

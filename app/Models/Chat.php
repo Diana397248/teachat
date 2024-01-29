@@ -23,6 +23,17 @@ class Chat extends Model
 
     public static function createUserChat($currentId, $friendUserId)
     {
+
+        foreach (Chat::all() as $ch) {
+            $resultFind = $ch->chatUsers->map(function ($cu) {
+                return $cu->user_id;
+            });
+            $reqArray = collect([intval($currentId), intval($friendUserId)]);
+            $containsAllValues = $resultFind->diff($reqArray);
+            if (count($containsAllValues) == 0) {
+                return;
+            }
+        }
         $newChat = new Chat();
         $newChat->save();
 
