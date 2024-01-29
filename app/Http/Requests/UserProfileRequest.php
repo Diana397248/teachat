@@ -28,7 +28,7 @@ class UserProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'avatar' => 'required|mimes:jpg,jpeg,png|max:2048',
+//            'avatar' => 'required|mimes:jpg,jpeg,png|max:2048',
             "name" => "required|unique:users,name," . $this->user()->id . "|max:255",
         ];
     }
