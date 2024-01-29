@@ -60,11 +60,12 @@ class UserProfileController extends Controller
         $srcContent = FileUtils::saveToLocalFromRequest($request, "avatar");
         $editProfile->avatar_src = $srcContent;
 
-        if (!$editProfile->likeCategories) {
+        if (count($editProfile->likeCategories) > 0) {
             foreach ($editProfile->likeCategories as $c) {
                 $c->delete();
             }
-
+        }
+        if (count($request->like_categories_ids) > 0) {
             foreach ($request->like_categories_ids as $id) {
                 $newLikeCategory = new UserLikeCategories();
                 $newLikeCategory->user_id = $userId;
