@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Models\UserLikeCategories;
 use Illuminate\Http\Response;
 
 class CategoryController extends Controller
@@ -74,6 +75,12 @@ class CategoryController extends Controller
         if (!$updateCategory) {
             return response(null, Response::HTTP_NOT_FOUND);
         }
+        $findPostsWithCategory = Post::where('category_id', $categoryId)->get();
+        $findUserLikesCategory = UserLikeCategories::where('category_id', $categoryId)->get();
+        if (count($findPostsWithCategory) > 0 || count($findUserLikesCategory) > 0) {
+            return response(null, Response::HTTP_I_AM_A_TEAPOT);
+        }
+
         $updateCategory->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
