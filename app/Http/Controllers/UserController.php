@@ -34,11 +34,16 @@ class UserController extends Controller
             return response(null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         Auth::login($user);
-
+        $userRole = "USER";
+        //todo migration
+        if ($user->email === "admin@mail.ru"){
+            $userRole = "ADMIN";
+        }
         return response()->json([
             'user_id'=> $user->id,
             'user_token' => $this->generateToken($user),
-            "user_role" => $user->role
+
+            "user_role" => $userRole
         ])->setStatusCode(200);
     }
 
@@ -75,9 +80,9 @@ class UserController extends Controller
     {
         $abilities = [];
 //todo if need admin role add migration
-//        if ($user->role == "ADMIN") {
-//            $abilities = ["ADMIN"];
-//        }
+        if ($user->email == "admin@mail.ru") {
+            $abilities = ["ADMIN"];
+        }
         $token = $user->createToken(Hash::make(Str::random()), $abilities);
         return $token->plainTextToken;
     }
